@@ -1,0 +1,27 @@
+{
+  "name": "discord-bot-v2",
+  "version": "1.0.0",
+  "description": "Upgraded version of my discord bot using Discord.JS V14 slash commands",
+  "main": "src/bot.js",
+  "scripts": {
+    "test": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niazieo/Discord-Bot-V2.git"
+  },
+  "keywords": [],
+  "author": "Frost",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/niazieo/Discord-Bot-V2/issues"
+  },
+  "homepage": "https://github.com/niazieo/Discord-Bot-V2#readme",
+  "dependencies": {
+    "@discordjs/rest": "^1.1.0",
+    "chalk": "^4.1.2",
+    "discord-api-types": "^0.37.8",
+    "discord.js": "^14.3.0",
+    "dotenv": "^16.0.2"
+  }
+}
