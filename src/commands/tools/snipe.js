@@ -15,7 +15,7 @@ module.exports = {
                 name: msg.author, 
                 iconURL: msg.member.user.displayAvatarURL({dynamic : true})
             })
-            .setTimestamp();
+            .setTimestamp(msg.createdTimestamp);
         if (msg.image)
             deletedMsg.setImage(msg.image);
         if (msg.content)
