@@ -5,7 +5,7 @@ module.exports = {
     async execute(message, client) {
         if (message.partial) return;
 
-        client.snipes.set(message.channelID, {
+        client.snipes.set(message.channelId, {
             content: message.content,
             author: message.author.tag,
             member: message.member,
@@ -13,6 +13,6 @@ module.exports = {
             createdTimestamp: message.createdTimestamp
         })
         
-        //console.log(client.snipes.get(message.channelID))
+        //console.log(client.snipes.get(message.channelId))
     }
 };

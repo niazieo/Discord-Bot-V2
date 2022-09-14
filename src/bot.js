@@ -14,7 +14,7 @@ const client = new Client({
 
 client.commands = new Collection();
 client.commandArray = [];
-client.snipes = new Map();
+client.snipes = new Collection();
 //client.colour = "";
 
 const functionFolders = fs.readdirSync('./src/functions');
