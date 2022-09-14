@@ -10,16 +10,19 @@ module.exports = {
             interaction.reply("There's nothing to snipe!");
             return;
         } 
-        const embed = new EmbedBuilder()
+        const deletedMsg = new EmbedBuilder()
             .setAuthor({
                 name: msg.author, 
                 iconURL: msg.member.user.displayAvatarURL({dynamic : true})
             })
-            .setDescription(msg.content)
             .setTimestamp();
-        
+        if (msg.image)
+            deletedMsg.setImage(msg.image);
+        if (msg.content)
+            deletedMsg.setDescription(msg.content);
+            
         await interaction.reply({
-            embeds: [embed]
+            embeds: [deletedMsg]
         });
     }
 }
