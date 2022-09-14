@@ -20,13 +20,14 @@ module.exports = (client) => {
         }
 
         const clientID = '941976736487333898';
-        const guildID = '941980140030787606';
-        const rest = new REST({ version: '9' }).setToken(process.env.token);
+        //const guildID = '941980140030787606';
+        const rest = new REST({ version: '10' }).setToken(process.env.token);
         try {
             console.log('Started refreshing application (/) commands.');
 
-            //User applicationCommands for no server specifity
-            await rest.put(Routes.applicationGuildCommands(clientID, guildID), { 
+            //Use applicationCommands for no server specifity
+            //Use applicationGuildCommands for server specifity
+            await rest.put(Routes.applicationCommands(clientID), { 
                     body: client.commandArray, 
                 });
 
