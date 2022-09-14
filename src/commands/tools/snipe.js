@@ -5,7 +5,7 @@ module.exports = {
         .setName('snipe')
         .setDescription('Returns the most recently deleted message.'),
     async execute (interaction, client) {
-        const msg = client.snipes.get(interaction.channelID)
+        const msg = client.snipes.get(interaction.channelId)
         if (!msg){
             interaction.reply("There's nothing to snipe!");
             return;
