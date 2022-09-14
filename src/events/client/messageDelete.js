@@ -9,7 +9,8 @@ module.exports = {
             content: message.content,
             author: message.author.tag,
             member: message.member,
-            image: (message.attachments.first()) ? (message.attachments.first().proxyURL) : (null)
+            image: (message.attachments.first()) ? (message.attachments.first().proxyURL) : (null),
+            createdTimestamp: message.createdTimestamp
         })
         
         //console.log(client.snipes.get(message.channelID))
