@@ -7,9 +7,8 @@ module.exports = {
     async execute (interaction, client) {
         const embed = new EmbedBuilder()
             .setTitle('Available Commands')
-            .setDescription('Wow')
             .setColor(0x00ffff)
-            .setURL(`https://www.youtube.com/watch?v=3xqG6Mq-cYw`)
+            .setURL(`https://www.youtube.com/watch?v=dQw4w9WgXcQ`)
             .addFields([
                 {
                     name: `/coinflip`,
