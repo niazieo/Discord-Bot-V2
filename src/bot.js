@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const { token } = process.env;
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const { DisTube } = require("distube");
 const { SpotifyPlugin } = require("@distube/spotify");
 const fs = require('fs');
