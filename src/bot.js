@@ -34,6 +34,64 @@ for (const folder of functionFolders) {
         require(`./functions/${folder}/${file}`)(client);
 }
 
+// Distube events
+client.distube
+  .on("playSong", (queue, song) =>
+    queue.textChannel.send({
+      embeds: [
+        new EmbedBuilder()
+          .setColor(0x00ff00)
+          .setDescription(
+            `Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user}`
+          ),
+      ],
+    })
+  )
+  .on("addSong", (queue, song) =>
+    queue.textChannel.send({
+      embeds: [
+        new EmbedBuilder()
+          .setColor(0xffa500)
+          .setDescription(
+            `Added \`${song.name}\` - \`${song.formattedDuration}\` to the queue by ${song.user}`
+          ),
+      ],
+    })
+  )
+  .on("addList", (queue, playlist) =>
+    queue.textChannel.send({
+      embeds: [
+        new EmbedBuilder().setDescription(
+          `Added \`${playlist.name}\` playlist (${playlist.songs.length} songs) to queue`
+        ),
+      ],
+    })
+  )
+  .on("error", (channel, e) => {
+    if (channel)
+      channel.send({
+        embeds: [
+          new EmbedBuilder()
+            .setColor(0xff0000)
+            .setDescription(
+              `An error encountered: ${e.toString().slice(0, 1974)}`
+            ),
+        ],
+      });
+    else console.error(e);
+  })
+  .on("empty", (channel) =>
+    channel.send("Voice channel is empty! Leaving the channel...")
+  )
+  .on("searchNoResult", (message, query) =>
+    message.channel.send({
+      embeds: [
+        new EmbedBuilder().setDescription(`No result found for \`${query}\`!`),
+      ],
+    })
+  )
+  .on("finish", (queue) => queue.textChannel.send("Finished!"));
+
 client.handleEvents();
 client.handleCommands();
 client.login(token);
