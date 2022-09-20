@@ -20,7 +20,16 @@ module.exports = {
             return;
         }
         
-        queue.pause();
-        await interaction.reply({content: ":pause_button: Song has been paused."})
+        try {
+            queue.pause();
+            await interaction.reply({content: ":pause_button: Song has been paused."})
+        } catch (e) {
+            const errorEmbed = new EmbedBuilder()
+            .setColor(0xff0000)
+            .setDescription(`${e} \nCan't pause a song that isn't playing.`);
+            await interaction.reply({
+                embeds: [errorEmbed],
+            });
+        }
     }
 }

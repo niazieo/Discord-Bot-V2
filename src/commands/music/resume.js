@@ -20,8 +20,17 @@ module.exports = {
             await interaction.reply({content: "There is nothing to resume!"});
             return;
         }
-
-        queue.resume();
-        await interaction.reply({content: ":play_pause: Song has been resumed."})
+        try {
+            queue.resume();
+            await interaction.reply({content: ":play_pause: Song has been resumed."})
+        } catch (e) {
+            const errorEmbed = new EmbedBuilder()
+            .setColor(0xff0000)
+            .setDescription(`${e} \nUnable to resume a song that isn't paused.`);
+            await interaction.reply({
+                embeds: [errorEmbed],
+            });
+        }
+        
     }
 }
