@@ -14,7 +14,17 @@ module.exports = {
             });
         const queue = await client.distube.getQueue(VoiceChannel);
 
-        queue.stop();
-        await interaction.reply({content: "Goodbye!"})
+        try {
+            client.distube.stop(VoiceChannel);
+            await interaction.reply({content: "Goodbye!"})
+        } catch (e) {
+            const errorEmbed = new EmbedBuilder()
+            .setColor(0xff0000)
+            .setDescription(`${e} \n`);
+            await interaction.reply({
+                embeds: [errorEmbed],
+            });
+        }
+
     }
 }

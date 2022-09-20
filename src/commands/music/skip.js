@@ -19,8 +19,16 @@ module.exports = {
             await interaction.reply({content: "There is nothing in the queue."});
             return;
         }
-
-        queue.skip();
-        await interaction.reply({content: ":track_next: Song has been skipped."})
+        try {
+            await queue.skip();
+            await interaction.reply({content: ":track_next: Song has been skipped."})
+        } catch (e) {
+            const errorEmbed = new EmbedBuilder()
+            .setColor(0xff0000)
+            .setDescription(`${e} \nNothing to skip to!`);
+            await interaction.reply({
+                embeds: [errorEmbed],
+            });
+        }
     }
 }
