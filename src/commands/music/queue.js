@@ -3,7 +3,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 module.exports = {
     data: new SlashCommandBuilder()
     .setName("queue")
-    .setDescription("Skips to the next song"),
+    .setDescription("Displays the list of songs that have been added to the queue."),
     
     async execute(interaction, client) {
         const VoiceChannel = interaction.member.voice.channel;
