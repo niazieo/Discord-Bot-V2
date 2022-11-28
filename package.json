@@ -4,7 +4,7 @@
   "description": "Upgraded version of my discord bot using Discord.JS V14 slash commands",
   "main": "src/bot.js",
   "scripts": {
-    "test": "node ."
+    "start": "node ."
   },
   "repository": {
     "type": "git",
