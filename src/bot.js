@@ -16,10 +16,15 @@ const client = new Client({
 });
 
 const admin = require("firebase-admin");
-const serviceAccount = require("./firebase.json");
+//const serviceAccount = require("./firebase.json");
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert({
+    "projectId": process.env.FIREBASE_PROJECT_ID,
+    "private_key": process.env.FIREBASE_PRIVATE_KEY,
+    "client_email": process.env.FIREBASE_CLIENT_EMAIL,
+  }),
+  databaseURL: "https://discord-bot-74d33.firebaseio.com"
 });
 
 const db = admin.firestore();
