@@ -19,12 +19,7 @@ const admin = require("firebase-admin");
 //const serviceAccount = require("./firebase.json");
 
 admin.initializeApp({
-  credential: admin.credential.cert({
-    "projectId": process.env.FIREBASE_PROJECT_ID,
-    "private_key": process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-    "client_email": process.env.FIREBASE_CLIENT_EMAIL,
-  }),
-  databaseURL: "https://discord-bot-74d33.firebaseio.com"
+  credential: admin.credential.cert(process.env.service_account)
 });
 
 const db = admin.firestore();
