@@ -104,7 +104,7 @@ client.distube
       ],
     })
   )
-  .on("finish", (queue) => {
+  .on("finish", (queue, e) => {
     if (!queue) queue.textChannel.send("Finished!")
     else console.error(e)
   });
