@@ -34,6 +34,7 @@ client.commandArray = [];
 client.snipes = new Collection();
 client.distube = new DisTube(client, {
     leaveOnStop: true,
+    leaveOnFinish: false,
     emitNewSongOnly: true,
     emitAddListWhenCreatingQueue: false,
     plugins: [new SpotifyPlugin()],
@@ -105,8 +106,7 @@ client.distube
     })
   )
   .on("finish", (queue, e) => {
-    if (!queue) queue.textChannel.send("Finished!")
-    else console.error(e)
+    queue.textChannel.send("Finished!")
   });
 
 client.handleEvents();
