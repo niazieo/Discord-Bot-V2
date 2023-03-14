@@ -33,7 +33,9 @@ client.commands = new Collection();
 client.commandArray = [];
 client.snipes = new Collection();
 client.distube = new DisTube(client, {
+    searchSongs: 1,
     leaveOnStop: true,
+    leaveOnEmpty: true,
     leaveOnFinish: false,
     emitNewSongOnly: true,
     emitAddListWhenCreatingQueue: false,
@@ -105,7 +107,7 @@ client.distube
       ],
     })
   )
-  .on("finish", (queue, e) => {
+  .on("finish", (queue) => {
     queue.textChannel.send("Finished!")
   });
 
