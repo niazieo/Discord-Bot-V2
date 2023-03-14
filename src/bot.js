@@ -1,6 +1,5 @@
 require('dotenv').config();
 
-const { token } = process.env;
 const { Client, Collection, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const { DisTube } = require("distube");
 const { SpotifyPlugin } = require("@distube/spotify");
@@ -16,16 +15,18 @@ const client = new Client({
 });
 
 const admin = require("firebase-admin");
-//const serviceAccount = require("./firebase.json");
+const serviceAccount = require("./firebase.json");
 
-admin.initializeApp({
-  credential: admin.credential.cert({
-    privateKey: process.env.private_key.replace(/\\n/g, '\n'),
-    projectId: process.env.project_id,
-    clientEmail: process.env.client_email
-  }),
-  databaseURL: "https://discord-bot-74d33.firebaseio.com"
-});
+admin.initializeApp(serviceAccount);
+
+// admin.initializeApp({
+//   credential: admin.credential.cert({
+//     privateKey: process.env.private_key.replace(/\\n/g, '\n'),
+//     projectId: process.env.project_id,
+//     clientEmail: process.env.client_email
+//   }),
+//   databaseURL: "https://discord-bot-74d33.firebaseio.com"
+// });
 
 const db = admin.firestore();
 
@@ -113,4 +114,4 @@ client.distube
 
 client.handleEvents();
 client.handleCommands();
-client.login(token);
+client.login(process.env.TOKEN);
