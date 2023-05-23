@@ -3,6 +3,14 @@ Import things as needed
 */
 const { SlashCommandBuilder, messageLink, EmbedBuilder } = require("discord.js");
 const admin = require("firebase-admin");
+admin.initializeApp({
+    credential: admin.credential.cert({
+      privateKey: process.env.private_key.replace(/\\n/g, '\n'),
+      projectId: process.env.project_id,
+      clientEmail: process.env.client_email
+    }),
+    databaseURL: "https://discord-bot-74d33.firebaseio.com"
+  });
 const db = admin.firestore();
 
 module.exports = {
