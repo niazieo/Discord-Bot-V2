@@ -3,6 +3,7 @@ require('dotenv').config();
 const { Client, Collection, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const { DisTube } = require("distube");
 const { SpotifyPlugin } = require("@distube/spotify");
+const { SoundCloudPlugin } = require("@distube/soundcloud")
 const fs = require('fs');
 
 const client = new Client({ 
@@ -37,8 +38,10 @@ client.distube = new DisTube(client, {
     leaveOnEmpty: true,
     leaveOnFinish: false,
     emitNewSongOnly: true,
+    updateYouTubeDL: true,
+    nsfw: true,
     emitAddListWhenCreatingQueue: false,
-    plugins: [new SpotifyPlugin()],
+    plugins: [new SpotifyPlugin(), new SoundCloudPlugin()],
 });
 
 const functionFolders = fs.readdirSync('./src/functions');
