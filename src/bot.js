@@ -1,9 +1,9 @@
 require('dotenv').config();
 
 const { Client, Collection, GatewayIntentBits, EmbedBuilder } = require('discord.js');
-const { DisTube } = require("distube");
-const { SpotifyPlugin } = require("@distube/spotify");
-const { SoundCloudPlugin } = require("@distube/soundcloud")
+// const { DisTube } = require("distube");
+// const { SpotifyPlugin } = require("@distube/spotify");
+// const { SoundCloudPlugin } = require("@distube/soundcloud")
 const fs = require('fs');
 
 const client = new Client({ 
@@ -32,6 +32,8 @@ const client = new Client({
 client.commands = new Collection();
 client.commandArray = [];
 client.snipes = new Collection();
+
+/* DEPRECATED
 client.distube = new DisTube(client, {
     searchSongs: 1,
     leaveOnStop: true,
@@ -42,9 +44,11 @@ client.distube = new DisTube(client, {
     emitAddListWhenCreatingQueue: false,
     plugins: [new SpotifyPlugin(), new SoundCloudPlugin()],
 });
+*/
 
 const functionFolders = fs.readdirSync('./src/functions');
 for (const folder of functionFolders) {
+    if (folder === "music") continue; // ignore music folder since it is deprecated
     const functionFiles = fs
     .readdirSync(`./src/functions/${folder}`)
     .filter((file) => file.endsWith(".js"));
@@ -52,7 +56,9 @@ for (const folder of functionFolders) {
         require(`./functions/${folder}/${file}`)(client);
 }
 
-// Distube events
+/* DEPCRECATED
+
+Distube events
 client.distube
   .on("playSong", (queue, song) =>
     queue.textChannel.send({
@@ -111,6 +117,7 @@ client.distube
   .on("finish", (queue) => {
     queue.textChannel.send("Finished!")
   });
+*/
 
 client.handleEvents();
 client.handleCommands();

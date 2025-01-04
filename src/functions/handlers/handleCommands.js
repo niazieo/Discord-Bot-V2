@@ -6,6 +6,7 @@ module.exports = (client) => {
     client.handleCommands = async () => {
         const commandFolders = fs.readdirSync("./src/commands");
         for (const folder of commandFolders) {
+            if (folder === "music") continue; // ignore music folder since it is deprecated
             const commandFiles = fs
                 .readdirSync(`./src/commands/${folder}`)
                 .filter((file) => file.endsWith(".js"))
