@@ -54,13 +54,19 @@ module.exports = {
                         warnList.push([doc.id, doc.data().Warnings]);
                     })
                 })
-                const list = warnList.map((user) => `${user[0]}: ${user[1]}/3`).join("\n")
-                const warnEmbed = new EmbedBuilder()
-                .setTitle("Ban Warnings List")
-                .setDescription(list)
-                await interaction.reply({
-                    embeds: [warnEmbed]
-                })
+                if (!Array.isArray(warnList) || !warnList.length){
+                    await interaction.reply("Nobody has been warned yet!")
+                } 
+                else {
+                    const list = warnList.map((user) => `${user[0]}: ${user[1]}/3`).join("\n")
+                    const warnEmbed = new EmbedBuilder()
+                    .setTitle("Ban Warnings List")
+                    .setDescription(list)
+                    await interaction.reply({
+                        embeds: [warnEmbed]
+                    })
+                }
+                
             }
         }
     }
