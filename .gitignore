@@ -3,3 +3,4 @@ node_modules/
 config.json
 Procfile
 src/firebase.json
+ignoreme.txt

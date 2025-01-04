@@ -15,19 +15,7 @@ const client = new Client({
     ]
 });
 
-// const admin = require("firebase-admin");
-// // const serviceAccount = require("./firebase.json");
 
-// // admin.initializeApp(serviceAccount);
-
-// admin.initializeApp({
-//   credential: admin.credential.cert({
-//     privateKey: process.env.private_key.replace(/\\n/g, '\n'),
-//     projectId: process.env.project_id,
-//     clientEmail: process.env.client_email
-//   }),
-//   databaseURL: "https://discord-bot-74d33.firebaseio.com"
-// });
 
 client.commands = new Collection();
 client.commandArray = [];
