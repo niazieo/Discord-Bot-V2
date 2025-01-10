@@ -48,7 +48,10 @@ module.exports = {
                     }
                 }
             } catch (error) {
-                await interaction.reply("You do not have permission to use this command.");
+                await interaction.reply({
+                    content: "You do not have permission to use this command.",
+                    ephemeral: true
+                });
             };
             
             if (interaction.options.getSubcommand() === 'list') {
