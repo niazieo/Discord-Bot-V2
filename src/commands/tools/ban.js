@@ -27,7 +27,7 @@ module.exports = {
         const { options, member, channel, guildId } = interaction;
         const user = options.getString("user");
 
-        if (interaction.commandName === 'ban') {
+        if (interaction.commandName === 'ban' && member.permissions.has('ADMINISTRATOR')) {
 
             if (interaction.options.getSubcommand() === 'warning') {
                 if (user != null){
