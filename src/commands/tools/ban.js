@@ -27,25 +27,30 @@ module.exports = {
         const { options, member, channel, guildId } = interaction;
         const user = options.getString("user");
 
-        if (interaction.commandName === 'ban' && Message.member.roles.find(role => role.name === "Admin Gang")) {
+        if (interaction.commandName === 'ban') {
 
-            if (interaction.options.getSubcommand() === 'warning') {
-                if (user != null){
-                    await db.collection("ban"+guildId).doc(user).update ({
-                        Warnings: FieldValue.increment(1)
-                    })
-                    .catch((error) => {
-                        db.collection("ban"+guildId).doc(user).set({
+            try {
+                if (interaction.options.getSubcommand() === 'warning' && Message.member.roles.find(role => role.name === "Admin Gang")) {
+                    if (user != null){
+                        await db.collection("ban"+guildId).doc(user).update ({
                             Warnings: FieldValue.increment(1)
-                        })     
-                    })
-                    await interaction.reply({
-                        content: "Ban warning added for " + user
-                    })
-                } else {
-                    await interaction.reply("Please enter a user.")
+                        })
+                        .catch((error) => {
+                            db.collection("ban"+guildId).doc(user).set({
+                                Warnings: FieldValue.increment(1)
+                            })     
+                        })
+                        await interaction.reply({
+                            content: "Ban warning added for " + user
+                        })
+                    } else {
+                        await interaction.reply("Please enter a user.")
+                    }
                 }
-            }
+            } catch (error) {
+                await interaction.reply("You do not have permission to use this command.");
+            };
+            
             if (interaction.options.getSubcommand() === 'list') {
                 const warnList = [];
                 const snapshot = db.collection("ban"+guildId).get();
