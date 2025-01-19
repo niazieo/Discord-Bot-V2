@@ -52,6 +52,7 @@ module.exports = {
                     content: "You do not have permission to use this command.",
                     ephemeral: true
                 });
+                console.log(error);
             };
             
             if (interaction.options.getSubcommand() === 'list') {
