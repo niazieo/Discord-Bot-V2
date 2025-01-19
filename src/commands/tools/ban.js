@@ -30,7 +30,7 @@ module.exports = {
         if (interaction.commandName === 'ban') {
 
             try {
-                if (interaction.options.getSubcommand() === 'warning' && message.member.roles.find(role => role.name === "Admin Gang")) {
+                if (interaction.options.getSubcommand() === 'warning' && message.member.hasPermission("ADMINISTRATOR")) {
                     if (user != null){
                         await db.collection("ban"+guildId).doc(user).update ({
                             Warnings: FieldValue.increment(1)
