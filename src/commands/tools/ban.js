@@ -78,7 +78,6 @@ module.exports = {
                         await snapshot.then(querySnapshot => {
                             reasons = querySnapshot.data().Reason;
                         })
-                        console.log(reasons)
                         const list = reasons.map((reason,i) => `${i+1}: ${reason}`).join("\n")
                         const reasonEmbed = new EmbedBuilder()
                         .setDescription("### Ban Warning Reasons for " + user.toString() + "\n" + list)
