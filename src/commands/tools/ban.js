@@ -17,6 +17,9 @@ module.exports = {
                 .addStringOption((option) =>
                     option.setName('user').setDescription('User to warn').setRequired(true)
                 )
+                .addStringOption((option) =>
+                    option.setName('reason').setDescription('Reason for warning').setRequired(true)
+                )
         )
         .addSubcommand((subcommand) =>
             subcommand
@@ -26,33 +29,39 @@ module.exports = {
     async execute(interaction, client) {
         const { options, member, channel, guildId } = interaction;
         const user = options.getString("user");
+        const reason = options.getString("reason");
 
         if (interaction.commandName === 'ban') {
 
-            try {
-                if (interaction.options.getSubcommand() === 'warning' && message.member.roles.find(role => role.name === "Admin Gang")) {
-                    if (user != null){
-                        await db.collection("ban"+guildId).doc(user).update ({
-                            Warnings: FieldValue.increment(1)
-                        })
-                        .catch((error) => {
-                            db.collection("ban"+guildId).doc(user).set({
-                                Warnings: FieldValue.increment(1)
-                            })     
-                        })
-                        await interaction.reply({
-                            content: "Ban warning added for " + user
-                        })
-                    } else {
-                        await interaction.reply("Please enter a user.")
-                    }
+            if (interaction.options.getSubcommand() === 'warning' && interaction.member.permissions.has([PermissionsBitField.Flags.Administrator])) {
+                try {
+                    await db.collection("ban"+guildId).doc(user.toString()).update ({
+                        Warnings: FieldValue.increment(1),
+                        Reason: FieldValue.arrayUnion(reason) 
+                    })
+                    .catch((error) => {
+                        db.collection("ban"+guildId).doc(user.toString()).set({
+                            Warnings: FieldValue.increment(1),
+                            Reason: FieldValue.arrayUnion(reason)
+                        })     
+                    })
+                    await interaction.reply({
+                        content: "Ban warning added for " + user.toString() + "\n**Reason:** " + "`" + reason.toString() + "`"
+                    })
+                } catch (error) {
+                    console.error(error);
+                    await interaction.reply({
+                        content: "Something went wrong while adding the warning.",
+                        flags: MessageFlags.Ephemeral
+                    });
                 }
-            } catch (error) {
+
+            } else (
                 await interaction.reply({
                     content: "You do not have permission to use this command.",
-                    ephemeral: true
-                });
-            };
+                    flags: MessageFlags.Ephemeral
+                })
+            )
             
             if (interaction.options.getSubcommand() === 'list') {
                 const warnList = [];
