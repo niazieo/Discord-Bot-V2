@@ -91,14 +91,8 @@ module.exports = {
                     }
                     
                 } else {
-                    const snapshot = db.collection("ban"+guildId).get();
-                    if (!(await snapshot).exists) {
-                        await interaction.reply({
-                            content: "No warnings have been given out in this server. Yet...",
-                            ephemeral: true
-                        })
-                        return;
-                    } else { 
+                    try {
+                        const snapshot = db.collection("ban"+guildId).get();
                         const warnList = [];
                         await snapshot.then(querySnapshot => {
                             querySnapshot.docs.forEach(doc => {
@@ -115,6 +109,11 @@ module.exports = {
                         })
                         await interaction.editReply({
                             embeds: [warnEmbed]
+                        })
+                    } catch(error) {
+                        await interaction.reply({
+                            content: "No warnings have been issued in this server.",
+                            ephemeral: true
                         })
                     }
                     
