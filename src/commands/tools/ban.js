@@ -1,7 +1,7 @@
 /*
 Import things as needed
 */
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, PermissionsBitField } = require("discord.js");
 const admin = require("firebase-admin");
 const { FieldValue } = require("firebase-admin/firestore");
 const db = admin.firestore();
