@@ -56,12 +56,7 @@ module.exports = {
                     });
                 }
 
-            } else (
-                await interaction.reply({
-                    content: "You do not have permission to use this command.",
-                    flags: MessageFlags.Ephemeral
-                })
-            )
+            } 
             
             if (interaction.options.getSubcommand() === 'list') {
                 const warnList = [];
@@ -85,6 +80,13 @@ module.exports = {
                 }
                 
             }
+
+            else (
+                await interaction.reply({
+                    content: "You do not have permission to use this command.",
+                    flags: MessageFlags.Ephemeral
+                })
+            )
         }
     }
 }
