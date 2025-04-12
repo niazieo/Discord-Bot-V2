@@ -52,7 +52,7 @@ module.exports = {
                 .setFields([
                     { name: "Reason", value: reason.toString()},
                 ])
-                .setColor("Orange")
+                .setColor("Red")
                 await interaction.reply({
                     embeds: [banwarnEmbed]
                 })
@@ -81,7 +81,7 @@ module.exports = {
                         const list = reasons.map((reason,i) => `${i+1}: ${reason}`).join("\n")
                         const reasonEmbed = new EmbedBuilder()
                         .setDescription("### Ban Warning Reasons for " + user.toString() + "\n" + list)
-                        .setColor("Red")
+                        .setColor("Orange")
                         await interaction.deferReply({
                             content: "Fetching ban warning reason list...",
                         })
