@@ -1,7 +1,7 @@
 /*
 Import things as needed
 */
-const { SlashCommandBuilder, EmbedBuilder, PermissionsBitField, MessageFlags } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, PermissionsBitField } = require("discord.js");
 const admin = require("firebase-admin");
 const { FieldValue } = require("firebase-admin/firestore");
 const db = admin.firestore();
@@ -61,7 +61,7 @@ module.exports = {
                 await interaction.reply({
                     content: "You do not have permission to use this command.",
                     ephemeral: true
-                })
+                })  
             }
 
             if (interaction.options.getSubcommand() === 'list') {
@@ -78,6 +78,7 @@ module.exports = {
                         await snapshot.then(querySnapshot => {
                             reasons = querySnapshot.data().Reason;
                         })
+                        console.log(reasons)
                         const list = reasons.map((reason,i) => `${i+1}: ${reason}`).join("\n")
                         const reasonEmbed = new EmbedBuilder()
                         .setDescription("### Ban Warning Reasons for " + user.toString() + "\n" + list)
