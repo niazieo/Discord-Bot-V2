@@ -91,24 +91,33 @@ module.exports = {
                     }
                     
                 } else {
-                    const warnList = [];
                     const snapshot = db.collection("ban"+guildId).get();
-                    await snapshot.then(querySnapshot => {
-                        querySnapshot.docs.forEach(doc => {
-                            warnList.push([doc.id, doc.data().Warnings]);
+                    if (!(await snapshot).exists) {
+                        await interaction.reply({
+                            content: "No warnings have been given out in this server. Yet...",
+                            ephemeral: true
                         })
-                    })
-                    const list = warnList.map((user) => `${user[0]}: ${user[1]}/3`).join("\n")
-                    const warnEmbed = new EmbedBuilder()
-                    .setTitle("Ban Warnings List")
-                    .setDescription(list)
-                    .setColor("Yellow")
-                    await interaction.deferReply({
-                        content: "Fetching ban warning list...",
-                    })
-                    await interaction.editReply({
-                        embeds: [warnEmbed]
-                    })
+                        return;
+                    } else { 
+                        const warnList = [];
+                        await snapshot.then(querySnapshot => {
+                            querySnapshot.docs.forEach(doc => {
+                                warnList.push([doc.id, doc.data().Warnings]);
+                            })
+                        })
+                        const list = warnList.map((user) => `${user[0]}: ${user[1]}/3`).join("\n")
+                        const warnEmbed = new EmbedBuilder()
+                        .setTitle("Ban Warnings List")
+                        .setDescription(list)
+                        .setColor("Yellow")
+                        await interaction.deferReply({
+                            content: "Fetching ban warning list...",
+                        })
+                        await interaction.editReply({
+                            embeds: [warnEmbed]
+                        })
+                    }
+                    
                 }
                 
             }
