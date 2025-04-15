@@ -62,7 +62,7 @@ client.on('messageCreate', async (message) => {
       messages: [
         {
           role: 'system',
-          content: 'You are not allowed to respond with @here or @everyone. You are a helpful but horny assistant',
+          content: 'You are not allowed to respond with @here or @everyone. You are a helpful assistant',
         },
         {
           role: 'user',
@@ -78,13 +78,14 @@ client.on('messageCreate', async (message) => {
 
   const data = await response.json();
 
-  clearInterval(sendTypingInterval); // Clear the interval when the response is received
   if (!data.choices || !data.choices[0]) {
     return message.reply('No response from the model.');
   }
-  
+  clearInterval(sendTypingInterval); // Clear the interval when the response is received
   const reply = data.choices[0].message.content.trim();
   message.reply(reply);
+
+    
 
 });
 /* DEPCRECATED
