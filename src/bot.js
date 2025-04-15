@@ -83,7 +83,7 @@ client.on('messageCreate', async (message) => {
   });
       
   clearInterval(sendTypingInterval); // Clear the interval when the response is received
-  const reply = data.choices[0].message.content.trim() || "No response.";
+  const reply = data.choices[0].message.content.trim();
   message.reply(reply);
 });
 /* DEPCRECATED
