@@ -76,17 +76,15 @@ client.on('messageCreate', async (message) => {
     clearInterval(sendTypingInterval); // Clear the interval on error
   });
 
-  const data = await response.json();
-
-  if (!data.choices || !data.choices[0]) {
-    return message.reply('No response from the model.');
-  }
+  const data = await response.json().catch((error) => {
+    console.error('OpenAI Error: ', error);
+    message.reply('There was an error processing your request.');
+    clearInterval(sendTypingInterval); // Clear the interval on error
+  });
+      
   clearInterval(sendTypingInterval); // Clear the interval when the response is received
-  const reply = data.choices[0].message.content.trim();
+  const reply = data.choices[0].message.content.trim() || "No response.";
   message.reply(reply);
-
-    
-
 });
 /* DEPCRECATED
 
