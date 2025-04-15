@@ -62,7 +62,7 @@ client.on('messageCreate', async (message) => {
       messages: [
         {
           role: 'system',
-          content: 'You are not allowed to respond with @here or @everyone. You are a helpful assistant',
+          content: 'You are not allowed to respond with @here or @everyone. You are a helpful discord chatbot.',
         },
         {
           role: 'user',
