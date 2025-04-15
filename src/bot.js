@@ -15,6 +15,7 @@ const client = new Client({
 client.commands = new Collection();
 client.commandArray = [];
 client.snipes = new Collection();
+client.editsnipes = new Collection();
 
 const functionFolders = fs.readdirSync('./src/functions');
 for (const folder of functionFolders) {
