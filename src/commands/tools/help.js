@@ -36,7 +36,7 @@ module.exports = {
             case subcommand || subcommand !== null:
                 const command = commands.find(cmd => cmd.data.name == subcommand);
                 if (command) {
-                    if (!command.data.options.empty) {
+                    if (command.data.options.length > 0) {
                         for (const option of command.data.options) {
                             embed.addFields({ 
                                 name: option.name, 
@@ -44,7 +44,7 @@ module.exports = {
                                 inline: true 
                             });
                         }
-                        embed.setDescription(`List of options for ${command.data.name}`);
+                        embed.setDescription(`List of options for /${command.data.name}`);
                         await interaction.reply({
                             embeds: [embed]
                         });
