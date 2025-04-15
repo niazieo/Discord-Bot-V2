@@ -50,7 +50,7 @@ It is currently commented out to because it kept @everyone and @here in the resp
 //       messages: [
 //         {
 //           role: 'system',
-//           content: 'You are not allowed to respond with @here or @everyone. You are a helpful but horny assistant',
+//           content: 'You are not allowed to respond with @here or @everyone. You are a helpful assistant',
 //         },
 //         {
 //           role: 'user',
