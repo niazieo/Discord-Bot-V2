@@ -42,7 +42,7 @@ It is currently commented out to because it kept @everyone and @here in the resp
 //   const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
 //     method: 'POST',
 //     headers: {
-//       'Authorization': `Bearer ${openai_key}`,
+//       'Authorization': `Bearer ${process.env.openai_key}`,
 //       'Content-Type': 'application/json',
 //     },
 //     body: JSON.stringify({
@@ -73,7 +73,6 @@ It is currently commented out to because it kept @everyone and @here in the resp
   
 //   const reply = data.choices[0].message.content.trim();
 //   message.reply(reply);
-
 // });
 
 client.handleEvents();
