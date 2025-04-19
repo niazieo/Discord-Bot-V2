@@ -42,7 +42,7 @@ client.on('messageCreate', async (message) => {
   const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${openai_key}`,
+      'Authorization': `Bearer ${process.env.openai_key}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
