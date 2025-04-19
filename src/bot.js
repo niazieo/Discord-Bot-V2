@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const { Client, Collection, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+const { TOKEN, openai_key } = process.env;
 const fs = require('fs');
 
 const client = new Client({ 
@@ -43,7 +44,7 @@ client.on('messageCreate', async (message) => {
   const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${process.env.openai_key}`,
+      'Authorization': `Bearer ${openai_key}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -60,24 +61,20 @@ client.on('messageCreate', async (message) => {
       ],
     }),
   })
+
   const data = await response.json()
-  if (!data || !data.choices || data.choices.length === 0) {
-    console.error('No response from OpenRouter API');
-    message.reply('Rate limit exceeded: free-models-per-day. Please try again later.');
-    return;
-  }
   var reply = data.choices[0].message.content.trim()
   // console.log("Reply:", reply)
-  reply = reply.replace(/@everyone/g, '@\u200Beveryone').replace(/@here/g, '@\u200Bhere'); // Prevent pinging @everyone and @here
   try {
+    reply = reply.replace(/@everyone/g, '@\u200Beveryone').replace(/@here/g, '@\u200Bhere'); // Prevent pinging @everyone and @here by inserting a zero-width space
     message.reply(reply);
   } catch (error) {
     console.error('Error: ', error);
-    message.reply('There was an error sending the reply.');
+    message.reply('There was an error sending the reply. \n`', error.message, '`');
   }
   clearInterval(sendTypingInterval); // Clear the interval when done
 });
 
 client.handleEvents();
 client.handleCommands();
-client.login(process.env.TOKEN);
+client.login(TOKEN);
