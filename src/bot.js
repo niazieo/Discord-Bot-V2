@@ -67,6 +67,9 @@ client.on('messageCreate', async (message) => {
   // console.log("Reply:", reply)
   try {
     reply = reply.replace(/@everyone/g, '@\u200Beveryone').replace(/@here/g, '@\u200Bhere'); // Prevent pinging @everyone and @here by inserting a zero-width space
+    if (reply.length > 2000) {
+      reply = "The response is too long to send in a single message. Please try again with a shorter message.";
+    }
     message.reply(reply);
   } catch (error) {
     console.error('Error: ', error);
