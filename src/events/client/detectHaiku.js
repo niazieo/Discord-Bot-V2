@@ -14,6 +14,7 @@ module.exports = {
         // console.log(syl)
         if (syl == 17) {
            for (const word in words) {
+                syllable_count += syllable(words[word])
                 if (syllable_count < 5) {
                     lines[0].push(words[word])
                 } else if (syllable_count < 12) {
