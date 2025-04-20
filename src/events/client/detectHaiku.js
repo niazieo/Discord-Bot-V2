@@ -9,7 +9,7 @@ module.exports = {
         const syl = syllable(message.content)
         const words = message.content.split(' ')
         const lines = [[], [], []]
-        const syllable_count = 0
+        var syllable_count = 0
 
         // console.log(syl)
         if (syl == 17) {
