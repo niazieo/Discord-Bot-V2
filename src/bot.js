@@ -66,10 +66,18 @@ client.on('messageCreate', async (message) => {
   var reply = data.choices[0].message.content.trim()
   // console.log("Reply:", reply)
   try {
-    reply = reply.replace(/@everyone/g, '@\u200Beveryone').replace(/@here/g, '@\u200Bhere'); // Prevent pinging @everyone and @here by inserting a zero-width space
     if (reply.length > 2000) {
       reply = "The response is too long to send in a single message. Please try again with a shorter message.";
     }
+    reply = reply.replace(/@everyone/g, '@\u200Beveryone').replace(/@here/g, '@\u200Bhere'); // Prevent pinging @everyone and @here
+    reply = reply.replace(/<@!?(\d+)>/g, (match, userId) => {
+      const user = message.guild.members.cache.get(userId);
+      return user ? `@${user.displayName}` : match; // Replace with the user's display name
+    });
+    reply = reply.replace(/<@&!?(\d+)>/g, (match, roleId) => {
+      const role = message.guild.roles.cache.get(roleId);
+      return role ? `@${role.name}` : match; // Replace with the role name
+    });
     message.reply(reply);
   } catch (error) {
     console.error('Error: ', error);
