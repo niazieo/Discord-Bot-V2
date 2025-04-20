@@ -35,6 +35,9 @@ It is currently commented out to because it kept @everyone and @here in the resp
 client.on('messageCreate', async (message) => {
   if (message.author.bot) return;
   if (!message.mentions.has(client.user)) return;
+  if (message.channel.permissionsFor(message.client.user).has("SendMessages") === false) {
+    return message.react("❌").catch(console.error);
+  }
 
   await message.channel.sendTyping();
   const sendTypingInterval = setInterval(() => {
