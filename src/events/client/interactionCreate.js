@@ -1,6 +1,3 @@
-
-const fs = require('fs');
-
 module.exports = {
     name: 'interactionCreate',
     async execute (interaction, client) {
