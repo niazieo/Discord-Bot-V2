@@ -30,7 +30,6 @@
     "firebase": "^8.6.8",
     "firebase-admin": "^12.0.0",
     "libsodium-wrappers": "^0.7.10",
-    "syllable": "^5.0.1",
-    "undici": "^6.6.2"
+    "syllable": "^5.0.1"
   }
 }

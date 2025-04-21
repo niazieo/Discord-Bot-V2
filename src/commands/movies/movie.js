@@ -1,7 +1,4 @@
-/*
-Import things as needed
-*/
-const { SlashCommandBuilder, messageLink, EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const admin = require("firebase-admin");
 admin.initializeApp({
     credential: admin.credential.cert({

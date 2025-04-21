@@ -1,6 +1,3 @@
-/*
-Import things as needed
-*/
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
