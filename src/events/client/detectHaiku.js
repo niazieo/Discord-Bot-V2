@@ -8,7 +8,7 @@ module.exports = {
         if (message.author.bot) return;
         if (syllable(message.content) !== 17) return;
         // console.log(syllable(message.content))
-        const words = message.content.split(' ');
+        const words = message.content.split('\n').join(' ').split(' ');
         const lines = [[], [], []];
         const syllable_limts = [5, 7, 5];
         let syllable_count = 0;
