@@ -6,24 +6,27 @@ module.exports = {
     async execute(message) {
         if (message.partial) return;
         if (message.author.bot) return;
-        const syl = syllable(message.content)
-        const words = message.content.split(' ')
-        const lines = [[], [], []]
-        var syllable_count = 0
+        if (syllable(message.content) !== 17) return;
+        // console.log(syllable(message.content))
+        const words = message.content.split(' ');
+        const lines = [[], [], []];
+        const syllable_limts = [5, 7, 5];
+        let syllable_count = 0;
+        let current_line = 0;
 
-        // console.log(syl)
-        if (syl == 17) {
-           for (const word in words) {
-                syllable_count += syllable(words[word])
-                if (syllable_count < 5) {
-                    lines[0].push(words[word])
-                } else if (syllable_count < 12) {
-                    lines[1].push(words[word])
-                } else {
-                    lines[2].push(words[word])
-                }
+        for (const word of words) {
+            if (syllable_count + syllable(word) > syllable_limts[current_line]) {
+                current_line++;
+                syllable_count = 0;
+                if (current_line >= lines.length) return;
             }
-            const haiku = lines[0].join(' ') + '\n' + lines[1].join(' ') + '\n' + lines[2].join(' ')
+            lines[current_line].push(word);
+            syllable_count += syllable(word);
+        }
+        // console.log(syllable(lines[0].join(' ')), syllable(lines[1].join(' ')), syllable(lines[2].join(' ')));
+        if (syllable(lines[0].join(' ')) === 5 && syllable(lines[1].join(' ')) === 7 && syllable(lines[2].join(' ')) === 5) {
+            const haiku = `${lines[0].join(' ')}\n${lines[1].join(' ')}\n${lines[2].join(' ')}`
+            // console.log(lines[1])
             const haikuEmbed = new EmbedBuilder()
             .setColor('#ffb7c5')
             .setDescription(italic(haiku))
@@ -35,6 +38,8 @@ module.exports = {
                     repliedUser: false
                 }
             })
+        } else {
+            return;
         }
     }
 };
