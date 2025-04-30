@@ -19,12 +19,8 @@ module.exports = {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            model: 'meta-llama/llama-4-maverick:free',
+            model: 'deepseek/deepseek-chat-v3-0324:free',
             messages: [
-              {
-                role: 'system',
-                content: 'You are a helpful discord chatbot.',
-              },
               {
                 role: 'user',
                 content: message.content,
