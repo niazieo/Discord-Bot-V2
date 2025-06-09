@@ -2,6 +2,7 @@ module.exports = {
     name: 'messageCreate',
     async execute(message, client) {
         if (message.author.bot) return;
+        if (message.mentions.everyone) return;
         if (!message.mentions.has(client.user)) return;
         if (message.channel.permissionsFor(message.client.user).has("SendMessages") === false) {
           return message.react("❌").catch(console.error);
