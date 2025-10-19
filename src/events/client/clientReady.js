@@ -1,5 +1,5 @@
 module.exports = {
-    name: "ready",
+    name: "clientReady",
     once: true,
     async execute(client) {
       // Uncomment line below to randomize the presence of the bot

@@ -20,7 +20,7 @@ module.exports = {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            model: 'deepseek/deepseek-chat-v3-0324:free',
+            model: 'openai/gpt-oss-20b:free',
             messages: [
               {
                 role: 'system',
@@ -35,6 +35,7 @@ module.exports = {
         })
       
         const data = await response.json()
+        // console.log("AI Response Data:", data)
         var reply = data.choices[0].message.content.trim()
         // console.log("Reply:", reply)
         try {
