@@ -19,7 +19,6 @@ client.editsnipes = new Collection();
 
 const functionFolders = fs.readdirSync('./src/functions');
 for (const folder of functionFolders) {
-    if (folder === "music") continue; // ignore music folder since it is deprecated
     const functionFiles = fs
     .readdirSync(`./src/functions/${folder}`)
     .filter((file) => file.endsWith(".js"));

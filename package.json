@@ -20,14 +20,14 @@
   "dependencies": {
     "@discordjs/collection": "^2.0.0",
     "@discordjs/formatters": "^0.6.0",
-    "@discordjs/opus": "^0.9.0",
+    "@discordjs/opus": "^0.10.0",
     "@discordjs/rest": "^1.1.0",
     "chalk": "^4.1.2",
     "discord-api-types": "^0.37.8",
     "discord.js": "^14.3.0",
     "dotenv": "^16.0.2",
     "ffmpeg-static": "^5.2.0",
-    "firebase": "^8.6.8",
+    "firebase": "^12.4.0",
     "firebase-admin": "^12.0.0",
     "libsodium-wrappers": "^0.7.10",
     "syllable": "^5.0.1"
