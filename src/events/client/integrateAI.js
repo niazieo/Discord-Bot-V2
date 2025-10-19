@@ -23,6 +23,10 @@ module.exports = {
             model: 'deepseek/deepseek-chat-v3-0324:free',
             messages: [
               {
+                role: 'system',
+                content: 'Reply in 1500 characters or fewer.',
+              },
+              {
                 role: 'user',
                 content: message.content,
               },
