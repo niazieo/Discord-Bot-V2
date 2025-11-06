@@ -1,7 +1,7 @@
 require('dotenv').config();
 
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
-const fs = require('fs');
+import { Client, Collection, GatewayIntentBits } from 'discord.js';
+import { readdirSync } from 'fs';
 
 const client = new Client({ 
     intents: [
@@ -17,10 +17,9 @@ client.commandArray = [];
 client.snipes = new Collection();
 client.editsnipes = new Collection();
 
-const functionFolders = fs.readdirSync('./src/functions');
+const functionFolders = readdirSync('./src/functions');
 for (const folder of functionFolders) {
-    const functionFiles = fs
-    .readdirSync(`./src/functions/${folder}`)
+    const functionFiles = readdirSync(`./src/functions/${folder}`)
     .filter((file) => file.endsWith(".js"));
     for (const file of functionFiles) 
         require(`./functions/${folder}/${file}`)(client);

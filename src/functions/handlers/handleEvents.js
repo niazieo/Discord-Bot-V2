@@ -1,11 +1,10 @@
-const fs = require('fs');
+import { readdirSync } from 'fs';
 
-module.exports = (client) => {
+export default (client) => {
     client.handleEvents = async () => {
-        const eventFolders = fs.readdirSync(`./src/events`);
+        const eventFolders = readdirSync(`./src/events`);
         for (const folder of eventFolders) {
-            const eventFiles = fs
-                .readdirSync(`./src/events/${folder}`)
+            const eventFiles = readdirSync(`./src/events/${folder}`)
                 .filter((file) => file.endsWith(".js"));
             switch (folder) {
                 case "client":

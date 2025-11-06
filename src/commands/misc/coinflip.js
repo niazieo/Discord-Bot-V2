@@ -1,13 +1,11 @@
-const { SlashCommandBuilder } = require("discord.js");
+import { SlashCommandBuilder } from "discord.js";
 
-module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('coinflip')
-        .setDescription('Flips a coin.'),
-    async execute (interaction, client) {
-        const coin = ['H', 'T']
-        const randomSide = coin[Math.floor(Math.random() * coin.length)];
+export const data = new SlashCommandBuilder()
+    .setName('coinflip')
+    .setDescription('Flips a coin.');
+export async function execute(interaction, client) {
+    const coin = ['H', 'T'];
+    const randomSide = coin[Math.floor(Math.random() * coin.length)];
 
-        await interaction.reply(randomSide)
-    }
+    await interaction.reply(randomSide);
 }

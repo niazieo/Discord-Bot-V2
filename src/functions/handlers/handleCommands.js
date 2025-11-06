@@ -1,14 +1,13 @@
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
-const fs = require('fs');
+import { REST } from '@discordjs/rest';
+import { Routes } from 'discord-api-types/v9';
+import { readdirSync } from 'fs';
 
-module.exports = (client) => {
+export default (client) => {
     client.handleCommands = async () => {
-        const commandFolders = fs.readdirSync("./src/commands");
+        const commandFolders = readdirSync("./src/commands");
         for (const folder of commandFolders) {
             if (folder === "music") continue; // ignore music folder since it is deprecated
-            const commandFiles = fs
-                .readdirSync(`./src/commands/${folder}`)
+            const commandFiles = readdirSync(`./src/commands/${folder}`)
                 .filter((file) => file.endsWith(".js"))
 
             const { commands, commandArray } = client;
