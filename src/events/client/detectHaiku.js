@@ -1,7 +1,7 @@
-const { syllable } = require('syllable');
-const { EmbedBuilder, italic } = require('discord.js');
+import {syllable} from 'syllable'
+import { EmbedBuilder, italic } from 'discord.js';
 
-module.exports = {
+export default {
     name: 'messageCreate',
     async execute(message) {
         if (message.partial) return;

@@ -1,16 +1,21 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const admin = require("firebase-admin");
-admin.initializeApp({
-    credential: admin.credential.cert({
-      privateKey: process.env.private_key.replace(/\\n/g, '\n'),
-      projectId: process.env.project_id,
-      clientEmail: process.env.client_email
-    }),
-    databaseURL: "https://discord-bot-74d33.firebaseio.com"
-  });
+import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
+import admin from "firebase-admin";
+
+// Initialize Firebase Admin only if not already initialized
+if (!admin.apps.length) {
+    admin.initializeApp({
+        credential: admin.credential.cert({
+            privateKey: process.env.private_key.replace(/\\n/g, '\n'),
+            projectId: process.env.project_id,
+            clientEmail: process.env.client_email
+        }),
+        databaseURL: "https://discord-bot-74d33.firebaseio.com"
+    });
+}
+
 const db = admin.firestore();
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName('movie')
         .setDescription('description')
@@ -41,52 +46,50 @@ module.exports = {
 
         if (interaction.commandName === 'movie') {
             if (interaction.options.getSubcommand() === 'add') {
-                if (movieName != null){
+                if (movieName != null) {
+                    // Add movie logic
                     await db.collection(guildId).add({
-                        Movie: movieName
-                    })
-                    await interaction.reply({
-                        content: movieName + " has been added to the list!"
-                    })
+                        Movie: movieName,
+                        AddedBy: member.user.tag,
+                        Timestamp: admin.firestore.FieldValue.serverTimestamp()
+                    });
+                    await interaction.reply(`Added "${movieName}" to the movie list!`);
                 } else {
-                    await interaction.reply("Please enter a valid movie name.")
+                    await interaction.reply('Please provide a movie name.');
                 }
             }
         
             if (interaction.options.getSubcommand() === 'remove') {
                 const snapshot = await db.collection(guildId).where('Movie', "==", movieName).get();
                 if (snapshot.empty) {
-                    interaction.reply(movieName + " not found. Did you type it correctly?");
-                }
-                else{
-                    snapshot.forEach(doc => {
-                        doc.ref.delete();
-                    })
-                    interaction.reply(movieName + ' has been removed from the list!');
+                    await interaction.reply(`"${movieName}" not found in the list.`);
+                } else {
+                    snapshot.forEach(async (doc) => {
+                        await doc.ref.delete();
+                    });
+                    await interaction.reply(`Removed "${movieName}" from the movie list!`);
                 }
             }
 
             if (interaction.options.getSubcommand() === 'list') {
                 const movieList = [];
-                const snapshot = db.collection(guildId).get();
-                await snapshot.then(querySnapshot => {
-                    querySnapshot.docs.forEach(doc => {
-                        movieList.push(doc.data().Movie);
-                    })
-                })
-
-                if (!Array.isArray(movieList) || !movieList.length){
-                    await interaction.reply("No movies in the list.")
-                } 
-                else {
-                    const list = movieList.map((movie, i) => `${i+1}. ${movie}`).join("\n")
-                    const movieEmbed = new EmbedBuilder()
-                    .setTitle("Movie List")
-                    .setDescription(list)
-                    await interaction.reply({
-                        embeds: [movieEmbed]
-                    })
+                const snapshot = await db.collection(guildId).get();
+                
+                if (snapshot.empty) {
+                    await interaction.reply('No movies in the list.');
+                    return;
                 }
+                
+                snapshot.forEach((doc) => {
+                    movieList.push(doc.data().Movie);
+                });
+                
+                const embed = new EmbedBuilder()
+                    .setTitle('Movie List')
+                    .setDescription(movieList.join('\n') || 'No movies added yet')
+                    .setColor(0x00ffff);
+                
+                await interaction.reply({ embeds: [embed] });
             }
         }
     }

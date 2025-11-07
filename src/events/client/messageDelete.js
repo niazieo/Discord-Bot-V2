@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: 'messageDelete',
     async execute(message, client) {
         if (message.partial) return;

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     name: 'messageUpdate',
     async execute(oldMessage, newMessage, client) {
         if (oldMessage === newMessage) return;
