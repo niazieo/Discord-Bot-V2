@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node ."
   },
+  "type" : "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/niazieo/Discord-Bot-V2.git"

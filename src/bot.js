@@ -1,7 +1,10 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
-const fs = require('fs');
+import { Client, Collection, GatewayIntentBits } from 'discord.js';
+import { readdirSync } from 'fs';
+import path from 'path';
+import { pathToFileURL } from 'url';
 
 const client = new Client({ 
     intents: [
@@ -17,15 +20,43 @@ client.commandArray = [];
 client.snipes = new Collection();
 client.editsnipes = new Collection();
 
-const functionFolders = fs.readdirSync('./src/functions');
-for (const folder of functionFolders) {
-    const functionFiles = fs
-    .readdirSync(`./src/functions/${folder}`)
-    .filter((file) => file.endsWith(".js"));
-    for (const file of functionFiles) 
-        require(`./functions/${folder}/${file}`)(client);
+const functionFolders = readdirSync('./src/functions');
+
+async function loadFunctions() {
+    for (const folder of functionFolders) {
+        const functionFiles = readdirSync(path.join('./src/functions', folder))
+            .filter((file) => file.endsWith('.js'));
+        for (const file of functionFiles) {
+            const fullPath = path.resolve('./src/functions', folder, file);
+            try {
+                const mod = await import(pathToFileURL(fullPath).href);
+                const fn = mod.default ?? mod;
+                if (typeof fn === 'function') {
+                    // module exports a function that takes the client
+                    fn(client);
+                } else if (typeof mod.init === 'function') {
+                    mod.init(client);
+                } else if (typeof mod.setup === 'function') {
+                    mod.setup(client);
+                } else {
+                    console.warn(`No callable export found in ${fullPath}`);
+                }
+            } catch (err) {
+                console.error(`Failed to import ${fullPath}:`, err);
+            }
+        }
+    }
 }
 
-client.handleEvents();
-client.handleCommands();
-client.login(process.env.TOKEN);
+(async () => {
+    await loadFunctions();
+
+    if (typeof client.handleEvents === 'function') {
+        await client.handleEvents();
+    }
+    if (typeof client.handleCommands === 'function') {
+        await client.handleCommands();
+    }
+
+    client.login(process.env.TOKEN);
+})();

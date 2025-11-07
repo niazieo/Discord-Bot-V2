@@ -1,7 +1,9 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const fs = require('fs');
+import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
+import { readdirSync } from 'fs';
+import path from 'path';
+import { pathToFileURL } from 'url';
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName('help')
         .setDescription('Return an embed with all the available commands')
@@ -14,21 +16,22 @@ module.exports = {
 
     async execute (interaction, client) {
         const embed = new EmbedBuilder()
-        .setTitle('Help Menu')
-        .setDescription('List of available commands')
-        .setColor(0x00ffff)
-        .setURL(`https://www.youtube.com/watch?v=3xqG6Mq-cYw`)
-        const commandFolders = fs.readdirSync("./src/commands");
-        const commands = []
+            .setTitle('Help Menu')
+            .setDescription('List of available commands')
+            .setColor(0x00ffff)
+            .setURL(`https://www.youtube.com/watch?v=3xqG6Mq-cYw`);
+
+        const commandFolders = readdirSync("./src/commands");
+        const commands = [];
         const subcommand = interaction.options.getString('command');
 
         for (const folder of commandFolders) {
-            const commandFiles = fs
-                .readdirSync(`./src/commands/${folder}`)
-                .filter((file) => file.endsWith(".js"))
+            const commandFiles = readdirSync(`./src/commands/${folder}`)
+                .filter((file) => file.endsWith(".js"));
             for (const file of commandFiles) {
-                const command = require(`../../commands/${folder}/${file}`);
-                commands.push(command);
+                const fullPath = path.resolve(`./src/commands/${folder}/${file}`);
+                const command = await import(pathToFileURL(fullPath).href);
+                commands.push(command.default);
             }
         }
 
