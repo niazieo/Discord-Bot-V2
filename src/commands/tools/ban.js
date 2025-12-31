@@ -29,16 +29,20 @@ export default {
                 .addUserOption((option) =>
                     option.setName('user').setDescription('User to view the list of warnings').setRequired(false)
                 )
+                .addNumberOption((option) =>
+                    option.setName('year').setDescription('Year to view the list of warnings').setRequired(false)
+                )
         ),
     async execute(interaction, client) {
-        const { options, member, guildId } = interaction;
+        const { options, member, guild } = interaction;
         const user = options.getUser("user");
         const reason = options.getString("reason");
-    
+        const year = options.getNumber("year");
+        const datetime = new Date();
+        const colId = datetime.getFullYear() + "-ban-" + guild.name;
         if (interaction.commandName !== 'ban') return;
     
         const subcommand = options.getSubcommand();
-    
         switch (subcommand) {
             case 'warning':
                 if (!member.permissions.has(PermissionsBitField.Flags.Administrator)) {
@@ -50,14 +54,16 @@ export default {
                 }
     
                 try {
-                    await db.collection("ban" + guildId).doc(user.toString()).update({
+                    await db.collection(colId).doc(user.toString()).update({
                         Warnings: FieldValue.increment(1),
-                        Reason: FieldValue.arrayUnion(reason)
+                        Reason: FieldValue.arrayUnion(reason),
+                        Alias: user.tag
                     });
                 } catch (error) {
-                    await db.collection("ban" + guildId).doc(user.toString()).set({
+                    await db.collection(colId).doc(user.toString()).set({
                         Warnings: FieldValue.increment(1),
-                        Reason: FieldValue.arrayUnion(reason)
+                        Reason: FieldValue.arrayUnion(reason),
+                        Alias: user.tag
                     });
                 }
     
@@ -71,7 +77,13 @@ export default {
     
             case 'list':
                 if (user) {
-                    const snapshot = await db.collection("ban" + guildId).doc(user.toString()).get();
+                    var snapshot = await db.collection(colId).doc(user.toString()).get();
+
+                    if (year) {
+                       var snapshot = await db.collection(year + "-ban-" + guild.name).doc(user.toString()).get().catch(() => {
+                                throw new Error("Does not exist.");
+                            });;
+                    }
     
                     if (!snapshot.exists) {
                         await interaction.reply({
@@ -93,7 +105,11 @@ export default {
     
                 } else {
                     try {
-                        const snapshot = await db.collection("ban" + guildId).get();
+                        if (year) {
+                            var snapshot = await db.collection(year + "-ban-" + guild.name).get();
+                        } else {
+                            var snapshot = await db.collection(colId).get();
+                        }
     
                         if (snapshot.empty) {
                             throw new Error("No warnings");
@@ -114,12 +130,13 @@ export default {
     
                     } catch (error) {
                         await interaction.reply({
-                            content: "No warnings have been issued to anyone yet!",
+                            content: "No warnings have been issued to anyone" + (year ? ` in the year ${year}.` : "!"),
                             ephemeral: true
                         });
                     }
                 }
                 break;
+
     
             default:
                 await interaction.reply({
