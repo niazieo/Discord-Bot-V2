@@ -80,9 +80,12 @@ export default {
                     var snapshot = await db.collection(colId).doc(user.toString()).get();
 
                     if (year) {
-                       var snapshot = await db.collection(year + "-ban-" + guild.name).doc(user.toString()).get().catch(() => {
+                        snapshot = await db.collection(year + "-ban-" + guild.name).doc(user.toString()).get().catch(() => {
                                 throw new Error("Does not exist.");
-                            });;
+                            });
+                        if (year == "2025") {
+                            snapshot = await db.collection("ban" + guild.id).doc(user.toString()).get();
+                        }
                     }
     
                     if (!snapshot.exists) {
@@ -105,10 +108,13 @@ export default {
     
                 } else {
                     try {
+                        var snapshot = await db.collection(colId).get();
+
                         if (year) {
-                            var snapshot = await db.collection(year + "-ban-" + guild.name).get();
-                        } else {
-                            var snapshot = await db.collection(colId).get();
+                            snapshot = await db.collection(year + "-ban-" + guild.name).get();
+                            if (year == "2025") {
+                                snapshot = await db.collection("ban" + guild.id).get();
+                            }
                         }
     
                         if (snapshot.empty) {
