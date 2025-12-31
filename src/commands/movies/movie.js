@@ -41,9 +41,9 @@ export default {
                 .setDescription('View the list of movies added.')
         ),
     async execute(interaction, client) {
-        const { options, member } = interaction;
+        const { options, member, guild } = interaction;
         const movieName = options.getString("name");
-        const colId = "movie-" + interaction.guild.name;
+        const colId = "movie-" + guild.name;
 
         if (interaction.commandName === 'movie') {
             if (interaction.options.getSubcommand() === 'add') {
