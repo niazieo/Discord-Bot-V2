@@ -39,10 +39,14 @@ export default {
             subcommand
                 .setName('list')
                 .setDescription('View the list of movies added.')
+                .addBooleanOption((option) =>
+                    option.setName('old').setDescription('Old list of movies').setRequired(false)
+                )
         ),
     async execute(interaction, client) {
         const { options, member, guild } = interaction;
         const movieName = options.getString("name");
+        const old = options.getString("old");
         const colId = "movie-" + guild.name;
 
         if (interaction.commandName === 'movie') {
@@ -74,7 +78,10 @@ export default {
 
             if (interaction.options.getSubcommand() === 'list') {
                 const movieList = [];
-                const snapshot = await db.collection(colId).get();
+                var snapshot = await db.collection(colId).get();
+                if (old) {
+                    snapshot = await db.collection(guild.id).get();
+                }
                 
                 if (snapshot.empty) {
                     await interaction.reply('No movies in the list.');
