@@ -41,14 +41,15 @@ export default {
                 .setDescription('View the list of movies added.')
         ),
     async execute(interaction, client) {
-        const { options, member, channel, guildId } = interaction;
+        const { options, member, guild } = interaction;
         const movieName = options.getString("name");
+        const colId = "movie-" + guild.name;
 
         if (interaction.commandName === 'movie') {
             if (interaction.options.getSubcommand() === 'add') {
                 if (movieName != null) {
                     // Add movie logic
-                    await db.collection(guildId).add({
+                    await db.collection(colId).add({
                         Movie: movieName,
                         AddedBy: member.user.tag,
                         Timestamp: admin.firestore.FieldValue.serverTimestamp()
@@ -60,7 +61,7 @@ export default {
             }
         
             if (interaction.options.getSubcommand() === 'remove') {
-                const snapshot = await db.collection(guildId).where('Movie', "==", movieName).get();
+                const snapshot = await db.collection(colId).where('Movie', "==", movieName).get();
                 if (snapshot.empty) {
                     await interaction.reply(`"${movieName}" not found in the list.`);
                 } else {
@@ -73,7 +74,7 @@ export default {
 
             if (interaction.options.getSubcommand() === 'list') {
                 const movieList = [];
-                const snapshot = await db.collection(guildId).get();
+                const snapshot = await db.collection(colId).get();
                 
                 if (snapshot.empty) {
                     await interaction.reply('No movies in the list.');
