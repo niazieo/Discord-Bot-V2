@@ -23,7 +23,7 @@ export default (client) => {
             }
         }
 
-        const clientID = '941976736487333898';
+        const clientID = process.env.CLIENTID;
         const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
         try {
             console.log('Started refreshing application (/) commands.');
