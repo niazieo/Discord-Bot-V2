@@ -46,7 +46,7 @@ export default {
     async execute(interaction, client) {
         const { options, member, guild } = interaction;
         const movieName = options.getString("name");
-        const old = options.getString("old");
+        const old = options.getBoolean("old");
         const colId = "movie-" + guild.name;
 
         if (interaction.commandName === 'movie') {
