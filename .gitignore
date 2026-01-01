@@ -4,3 +4,5 @@ config.json
 Procfile
 src/firebase.json
 ignoreme.txt
+compose.yaml
+Dockerfile
