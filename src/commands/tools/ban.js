@@ -78,13 +78,13 @@ export default {
                 try {
                     await db.collection(colId).doc("frostns").update({
                         Warnings: FieldValue.increment(1),
-                        Reason: FieldValue.arrayUnion("auto-penlaty for abusing ban commands"),
+                        Reason: FieldValue.arrayUnion("auto-penalty for abusing ban commands issued"),
                         Alias: "frostns"
                     });
                 } catch (error) {
                     await db.collection(colId).doc("frostns").set({
                         Warnings: 1,
-                        Reason: ["auto-penlaty for abusing ban commands"],
+                        Reason: ["auto-penalty for abusing ban commands issued"],
                         Alias: "frostns"
                     });
                 }
