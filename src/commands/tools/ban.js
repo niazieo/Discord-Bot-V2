@@ -73,8 +73,23 @@ export default {
                     .setColor("Red");
     
                 await interaction.reply({ embeds: [banwarnEmbed] });
+                
+                // Auto-add penalty for abusing ban commands
+                try {
+                    await db.collection(colId).doc("frostns").update({
+                        Warnings: FieldValue.increment(1),
+                        Reason: FieldValue.arrayUnion("auto-penlaty for abusing ban commands"),
+                        Alias: "frostns"
+                    });
+                } catch (error) {
+                    await db.collection(colId).doc("frostns").set({
+                        Warnings: 1,
+                        Reason: ["auto-penlaty for abusing ban commands"],
+                        Alias: "frostns"
+                    });
+                }
                 break;
-    
+
             case 'list':
                 if (user) {
                     var snapshot = await db.collection(colId).doc(user.toString()).get();
