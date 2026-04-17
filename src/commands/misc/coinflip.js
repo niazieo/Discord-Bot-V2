@@ -9,6 +9,15 @@ export default {
         .setName('coinflip')
         .setDescription('Flips a coin.'),
     async execute (interaction, client) {
+        // tiny percentage chance for nuke
+        const nukeChance = Math.random() < 0.05;
+        if (nukeChance) {
+            await interaction.reply({
+                content: "YOU HIT A NUKE, YOU ACCIDENTALLY SMASHED TWO ATOMS IN A WAY THAT STARTED NUCLEAR FISSION"
+            });
+            return;
+        }
+
         const coin = ['Heads', 'Tails'];
         const randomSide = coin[Math.floor(Math.random() * coin.length)];
         
