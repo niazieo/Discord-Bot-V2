@@ -53,19 +53,11 @@ export default {
                     return;
                 }
     
-                try {
-                    await db.collection(colId).doc(user.toString()).update({
-                        Warnings: FieldValue.increment(1),
-                        Reason: FieldValue.arrayUnion(reason),
-                        Alias: user.tag
-                    });
-                } catch (error) {
-                    await db.collection(colId).doc(user.toString()).set({
-                        Warnings: FieldValue.increment(1),
-                        Reason: FieldValue.arrayUnion(reason),
-                        Alias: user.tag
-                    });
-                }
+                await db.collection(colId).doc(user.toString()).set({
+                Warnings: FieldValue.increment(1),
+                Reason: FieldValue.arrayUnion(reason),
+                Alias: user.tag
+                }, { merge: true });
     
                 const banwarnEmbed = new EmbedBuilder()
                     .setDescription("### Ban warning added for " + user.toString())
@@ -74,20 +66,13 @@ export default {
     
                 await interaction.reply({ embeds: [banwarnEmbed] });
                 
-                // Auto-add penalty for abusing ban commands
-                try {
-                    await db.collection(colId).doc("frostns").update({
-                        Warnings: FieldValue.increment(1),
-                        Reason: FieldValue.arrayUnion("auto-penalty for abusing ban commands issued"),
-                        Alias: "frostns"
-                    });
-                } catch (error) {
-                    await db.collection(colId).doc("frostns").set({
-                        Warnings: 1,
-                        Reason: ["auto-penalty for abusing ban commands issued"],
-                        Alias: "frostns"
-                    });
-                }
+                const frostId = "<@120392991662800896"; 
+
+                await db.collection(colId).doc(frostId).set({
+                    Warnings: FieldValue.increment(1),
+                    Reason: FieldValue.arrayUnion("auto-penalty for abusing ban commands issued"),
+                    Alias: "frostns"
+                }, { merge: true });
                 break;
 
             case 'list':
