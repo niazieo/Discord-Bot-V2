@@ -66,13 +66,6 @@ export default {
     
                 await interaction.reply({ embeds: [banwarnEmbed] });
                 
-                const frostId = "<@120392991662800896>"; 
-
-                await db.collection(colId).doc(frostId).set({
-                    Warnings: FieldValue.increment(1),
-                    Reason: FieldValue.arrayUnion("auto-penalty for abusing ban commands issued"),
-                    Alias: "frostns"
-                }, { merge: true });
                 break;
 
             case 'list':
