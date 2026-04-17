@@ -66,7 +66,7 @@ export default {
     
                 await interaction.reply({ embeds: [banwarnEmbed] });
                 
-                const frostId = "<@120392991662800896"; 
+                const frostId = "<@120392991662800896>"; 
 
                 await db.collection(colId).doc(frostId).set({
                     Warnings: FieldValue.increment(1),
