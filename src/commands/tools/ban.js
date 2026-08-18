@@ -53,19 +53,11 @@ export default {
                     return;
                 }
     
-                try {
-                    await db.collection(colId).doc(user.toString()).update({
-                        Warnings: FieldValue.increment(1),
-                        Reason: FieldValue.arrayUnion(reason),
-                        Alias: user.tag
-                    });
-                } catch (error) {
-                    await db.collection(colId).doc(user.toString()).set({
-                        Warnings: FieldValue.increment(1),
-                        Reason: FieldValue.arrayUnion(reason),
-                        Alias: user.tag
-                    });
-                }
+                await db.collection(colId).doc(user.toString()).set({
+                Warnings: FieldValue.increment(1),
+                Reason: FieldValue.arrayUnion(reason),
+                Alias: user.tag
+                }, { merge: true });
     
                 const banwarnEmbed = new EmbedBuilder()
                     .setDescription("### Ban warning added for " + user.toString())
@@ -73,8 +65,9 @@ export default {
                     .setColor("Red");
     
                 await interaction.reply({ embeds: [banwarnEmbed] });
+                
                 break;
-    
+
             case 'list':
                 if (user) {
                     var snapshot = await db.collection(colId).doc(user.toString()).get();

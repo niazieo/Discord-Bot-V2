@@ -1,4 +1,5 @@
 # Discord Bot V2
+Upgraded version of my original discord bot using Discord.JS V14 and Firebase Firestore.
 
 A modern Discord bot built with **Discord.JS V14** and **Firebase Firestore**, featuring slash commands, AI integration, and moderation tools.
 
