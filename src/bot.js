@@ -6,13 +6,18 @@ import { readdirSync } from 'fs';
 import path from 'path';
 import { pathToFileURL } from 'url';
 
-const client = new Client({ 
+const token = process.env.TOKEN;
+if (!token) {
+    throw new Error('TOKEN is not configured.');
+}
+
+const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildVoiceStates,
-    ]
+    ],
 });
 
 client.commands = new Collection();
@@ -26,13 +31,14 @@ async function loadFunctions() {
     for (const folder of functionFolders) {
         const functionFiles = readdirSync(path.join('./src/functions', folder))
             .filter((file) => file.endsWith('.js'));
+
         for (const file of functionFiles) {
             const fullPath = path.resolve('./src/functions', folder, file);
             try {
                 const mod = await import(pathToFileURL(fullPath).href);
                 const fn = mod.default ?? mod;
+
                 if (typeof fn === 'function') {
-                    // module exports a function that takes the client
                     fn(client);
                 } else if (typeof mod.init === 'function') {
                     mod.init(client);
@@ -58,5 +64,5 @@ async function loadFunctions() {
         await client.handleCommands();
     }
 
-    client.login(process.env.TOKEN);
+    await client.login(token);
 })();
