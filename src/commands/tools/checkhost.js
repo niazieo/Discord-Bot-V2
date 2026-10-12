@@ -1,5 +1,5 @@
-const { createConnection, isIP } = require('node:net');
-const { SlashCommandBuilder } = require('discord.js');
+import { createConnection, isIP } from 'node:net';
+import { SlashCommandBuilder } from 'discord.js';
 
 const CONNECTION_TIMEOUT_MS = 5000;
 
@@ -37,7 +37,7 @@ function checkServerPort(address, port) {
     });
 }
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName('check-host')
         .setDescription('Check whether the configured server host accepts connections on the specified port'),
@@ -71,13 +71,13 @@ module.exports = {
 
             switch (result.status) {
                 case 'open':
-                    response = `🟢 Server Host is online.`;
+                    response = '🟢 Server Host is online.';
                     break;
                 case 'closed':
-                    response = `🟠 Server Host responded, but TCP port refused the connection.`;
+                    response = '🟠 Server Host responded, but TCP port refused the connection.';
                     break;
                 case 'timeout':
-                    response = `⚪ Connection to Server Host timed out. The host or network may be filtering traffic; this does not confirm that the host is offline.`;
+                    response = '⚪ Connection to Server Host timed out. The host or network may be filtering traffic; this does not confirm that the host is offline.';
                     break;
                 default:
                     response = `❌ Could not reach Server Host${result.code ? ` (${result.code})` : ''}.`;
