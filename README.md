@@ -6,7 +6,7 @@ A modern Discord bot built with **Discord.JS V14** and **Firebase Firestore**, f
 ## 🚀 Features
 
 - **Slash Commands** - Modern slash command interface for all bot interactions
-- **AI Integration** - Built-in LLM integration from OpenRouter (mention the bot to chat)
+- **AI Integration** - Built-in LLM integration locally hosted model (mention the bot to chat)
 - **Message Tracking** - Snipe deleted and edited messages
 - **Fun Commands** - Coin flips, movie lookups, and more
 - **Haiku Detection** - Automatic detection and sharing of haikus in chat
