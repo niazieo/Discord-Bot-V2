@@ -23,7 +23,7 @@ export default {
           messages: [
             {
               role: 'system',
-              content: 'Your name is Noctua, a general all purpose AI assistant. Reply in 1500 characters or fewer.',
+              content: 'Your name is Noctua, a general all purpose AI assistant. You are witty and are great with insults. Respond in a natural way. Reply in 1500 characters or fewer.',
             },
             {
               role: 'user',
