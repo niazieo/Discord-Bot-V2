@@ -1,3 +1,8 @@
+import { Ollama } from 'ollama';
+
+const ollama = new Ollama({ host: process.env.OLLAMA_HOST, port: process.env.OLLAMA_PORT });
+const modelName = process.env.MODEL_NAME || 'qwen3:8b';
+
 export default {
     name: 'messageCreate',
     async execute(message, client) {
@@ -11,33 +16,26 @@ export default {
         await message.channel.sendTyping();
         const sendTypingInterval = setInterval(() => {
           message.channel.sendTyping();
-        }, 3000); // Send typing every 3 seconds
-      
-        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${process.env.openai_key}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: 'openai/gpt-oss-20b:free',
-            messages: [
-              {
-                role: 'system',
-                content: 'Reply in 1500 characters or fewer.',
-              },
-              {
-                role: 'user',
-                content: message.content,
-              },
-            ],
-          }),
-        })
-      
-        const data = await response.json()
-        // console.log("AI Response Data:", data)
-        var reply = data.choices[0].message.content.trim()
-        // console.log("Reply:", reply)
+        }, 5000); // Send typing every 5 seconds
+
+        const response = await ollama.chat({
+          model: modelName,
+          messages: [
+            {
+              role: 'system',
+              content: 'Your name is Noctua, a general all purpose AI assistant. You are witty. Reply in 1500 characters or fewer.',
+            },
+            {
+              role: 'user',
+              content: message.content,
+            },
+          ],
+        });
+
+        // console.log("AI Response Object:", response);
+        var reply = response.message.content;
+        console.log("Reply:", reply);
+
         try {
           if (reply.length > 2000) {
             reply = "The response is too long to send in a single message. Please try again with a shorter message.";
@@ -54,7 +52,7 @@ export default {
           message.reply(reply);
         } catch (error) {
           console.error('Error: ', error);
-          message.reply('There was an error sending the reply. \n`', error.message, '`');
+          message.reply('There was an error sending the reply. \n`' + error.message + '`');
         }
         clearInterval(sendTypingInterval); // Clear the interval when done
     }

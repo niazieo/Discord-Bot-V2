@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ."
   },
-  "type" : "module",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/niazieo/Discord-Bot-V2.git"
@@ -31,6 +31,7 @@
     "firebase": "^12.4.0",
     "firebase-admin": "^12.0.0",
     "libsodium-wrappers": "^0.7.10",
+    "ollama": "^0.6.4",
     "syllable": "^5.0.1"
   }
 }
