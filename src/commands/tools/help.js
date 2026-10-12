@@ -1,7 +1,31 @@
-import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
+﻿import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import { readdirSync } from 'fs';
 import path from 'path';
 import { pathToFileURL } from 'url';
+
+async function getCommands() {
+    const commandFolders = readdirSync('./src/commands');
+    const commands = [];
+
+    for (const folder of commandFolders) {
+        if (folder === 'music') continue;
+
+        const commandFiles = readdirSync(`./src/commands/${folder}`)
+            .filter((file) => file.endsWith('.js'));
+
+        for (const file of commandFiles) {
+            const fullPath = path.resolve(`./src/commands/${folder}/${file}`);
+            const imported = await import(pathToFileURL(fullPath).href);
+            const command = imported.default ?? imported;
+
+            if (command?.data?.name) {
+                commands.push(command);
+            }
+        }
+    }
+
+    return commands;
+}
 
 export default {
     data: new SlashCommandBuilder()
@@ -14,69 +38,55 @@ export default {
                 .setRequired(false)
         ),
 
-    async execute (interaction, client) {
+    async execute(interaction) {
         const embed = new EmbedBuilder()
             .setTitle('Help Menu')
             .setDescription('List of available commands')
             .setColor(0x00ffff)
-            .setURL(`https://www.youtube.com/watch?v=3xqG6Mq-cYw`);
 
-        const commandFolders = readdirSync("./src/commands");
-        const commands = [];
         const subcommand = interaction.options.getString('command');
+        const commands = await getCommands();
 
-        for (const folder of commandFolders) {
-            const commandFiles = readdirSync(`./src/commands/${folder}`)
-                .filter((file) => file.endsWith(".js"));
-            for (const file of commandFiles) {
-                const fullPath = path.resolve(`./src/commands/${folder}/${file}`);
-                const command = await import(pathToFileURL(fullPath).href);
-                commands.push(command.default);
-            }
-        }
+        if (subcommand) {
+            const command = commands.find((cmd) => cmd.data.name === subcommand);
 
-        switch (subcommand) {
-            case subcommand || subcommand !== null:
-                const command = commands.find(cmd => cmd.data.name == subcommand);
-                if (command) {
-                    if (command.data.options.length > 0) {
-                        for (const option of command.data.options) {
-                            embed.addFields({ 
-                                name: option.name, 
-                                value: option.description, 
-                                inline: true 
-                            });
-                        }
-                        embed.setDescription(`List of options for /${command.data.name}`);
-                        await interaction.reply({
-                            embeds: [embed]
-                        });
-                    } else {
-                        await interaction.reply({
-                            content: "This command has no options.",
-                            ephemeral: true
-                        });
-                    }
-                } else {
-                    await interaction.reply({
-                        content: "The `" + subcommand + "` command does not exist!",
-                        ephemeral: true
-                    });
-                }
-                
-                break;
-            default:
-                for (const command of commands) {
-                    embed.addFields({ 
-                        name: `/${command.data.name}`, 
-                        value: command.data.description, 
-                        inline: true 
-                    });
-                }
-                await interaction.reply({
-                    embeds: [embed]
+            if (!command) {
+                return interaction.reply({
+                    content: `The \`${subcommand}\` command does not exist!`,
+                    ephemeral: true,
                 });
-                break;
+            }
+
+            const options = command.data.options ?? [];
+
+            if (options.length === 0) {
+                return interaction.reply({
+                    content: 'This command has no options.',
+                    ephemeral: true,
+                });
+            }
+
+            for (const option of options) {
+                embed.addFields({
+                    name: option.name,
+                    value: option.description,
+                    inline: true,
+                });
+            }
+
+            embed.setDescription(`List of options for /${command.data.name}`);
+            return interaction.reply({ embeds: [embed] });
         }
-    }
+
+        for (const command of commands) {
+            embed.addFields({
+                name: `/${command.data.name}`,
+                value: command.data.description,
+                inline: true,
+            });
+        }
+
+        await interaction.reply({ embeds: [embed] });
+    },
 };
+
