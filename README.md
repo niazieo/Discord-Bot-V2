@@ -1,94 +1,143 @@
 # Discord Bot V2
-Upgraded version of my original discord bot using Discord.JS V14 and Firebase Firestore.
 
-A modern Discord bot built with **Discord.JS V14** and **Firebase Firestore**, featuring slash commands, AI integration, and moderation tools.
+A Discord bot built with Discord.js v14, Firebase, and an Ollama-powered AI chat layer. It includes slash commands for moderation, utility checks, movie tracking, and message history, while also responding to direct mentions with a local AI assistant.
 
-## 🚀 Features
+## Features
 
-- **Slash Commands** - Modern slash command interface for all bot interactions
-- **AI Integration** - Built-in LLM integration from OpenRouter (mention the bot to chat)
-- **Message Tracking** - Snipe deleted and edited messages
-- **Fun Commands** - Coin flips, movie lookups, and more
-- **Haiku Detection** - Automatic detection and sharing of haikus in chat
-- **Firebase Backend** - Persistent data storage with Firestore
+- Slash-command based bot interface using Discord.js v14
+- AI assistant replies when the bot is mentioned in a guild
+- Ollama integration with configurable model host, port, and model name
+- Message tracking for deleted and edited messages
+- Server and host connectivity checks
+- Moderation warning storage with Firebase Firestore
+- Movie list tracking stored in Firebase
+- Fun utility commands like coin flips and a "winton" command
+- Docker-ready deployment setup
 
-## 📋 Commands
+## Command overview
 
 ### Utility
-- `/ping` - Check bot latency and API response time
-- `/help` - Display available commands and usage
+- `/ping` – Check the bot latency and API responsiveness
+- `/help` – List available slash commands or view options for a specific command
+- `/check-host` – Check whether a configured host accepts connections on a given port
+- `/servers` – Check configured game server status
 
-### Message Tools
-- `/snipe` - Retrieve the most recently deleted message
-- `/editsnipe` - Retrieve the most recently edited message
+### Message tools
+- `/snipe` – Show the most recently deleted message
+- `/editsnipe` – Show the most recently edited message
 
 ### Moderation
-- `/banwarning` - Warns a user from the server
+- `/ban` – Add, view, and manage warning history for a user
 
 ### Fun
-- `/coinflip` - Flip a coin (Heads or Tails)
-- `/movie` - Contribute to or view the movie list
-- `/winton` - Winton
+- `/coinflip` – Flip a coin
+- `/movie` – Add, remove, and view the movie list
+- `/winton` – Fun bot interaction command
 
-### AI Chat
-- Mention the bot in any message to chat with the AI
+### AI
+- Mention the bot in a message to trigger a chat response using Ollama
 
-## 🛠️ Tech Stack
+## Tech stack
 
-- **Runtime**: Node.js
-- **Framework**: Discord.JS v14.3.0
-- **Database**: Firebase Admin SDK & Firestore
-- **AI Model**: OpenRouter LLM Integration
-- **Deployment**: Docker
+- Node.js
+- Discord.js v14
+- Firebase Admin SDK + Firestore
+- Ollama for local LLM chat responses
+- Docker / Docker Compose
 
-## 📦 Installation
+## Project structure
 
-### Prerequisites
-- Node.js (latest stable version)
-- Discord Bot Token
-- Firebase credentials
-- OpenRouter API key (for AI features)
+```text
+src/
+├── bot.js                  # Bot bootstrap and startup
+├── commands/              # Slash command definitions
+├── events/                # Event handlers, including AI mention integration
+├── functions/             # Loader utilities and handlers
+├── assets/                # Static assets
+└── deprecated/            # Legacy or unused code
+```
 
-### Setup
+## Prerequisites
 
-1. Clone the repository
+Before running the bot, make sure you have:
+
+- Node.js 18+ recommended
+- A Discord bot token
+- A Discord application/client ID
+- Firebase project credentials for Firestore access
+- An Ollama instance running locally or remotely
+
+## Installation
+
+1. Clone the repository:
+
 ```bash
 git clone https://github.com/niazieo/Discord-Bot-V2.git
 cd Discord-Bot-V2
 ```
 
-2. Install dependencies
+2. Install dependencies:
+
 ```bash
 npm install
 ```
 
-3. Create a `.env` file with your credentials:
-```
-DISCORD_TOKEN=your_bot_token
-FIREBASE_PROJECT_ID=your_firebase_project_id
-FIREBASE_PRIVATE=your_firebase_private_key
-FIREBASE_CLIENT_EMAIL=your_firebase_client_email
-OPENROUTER_API_KEY=your_openrouter_key
-CLIENTID=your_bot_discord_client_id
+3. Create a `.env` file in the project root with the required values:
+
+```env
+TOKEN="your_discord_bot_token"
+CLIENTID="your_discord_application_client_id"
+
+# Firebase
+project_id="your_firebase_project_id"
+private_key="your_firebase_private_key"
+client_email="your_firebase_client_email"
+
+# Ollama
+OLLAMA_HOST="http://localhost"
+OLLAMA_PORT="11434"
+MODEL_NAME="qwen3:8b"
+
+# Pterodactyl Panel
+PTERO_API_KEY="your_pterodactyl_panel_api_key"
+PTERO_URL="your_pterodactyl_panel_url"
+
+# Local Server
+SERVER_IP="localhost"
+SERVER_PORT="your_server_port"
 ```
 
-4. Start the bot
+Notes:
+- The app reads environment variables directly from `.env` at runtime.
+- The Firebase and Discord configuration must be valid for the bot to register slash commands and access Firestore.
+- If you use a different Ollama host or model, adjust the values accordingly.
+
+4. Start the bot:
+
 ```bash
 npm start
 ```
 
-## 🐳 Docker Deployment (WIP)
+## Docker deployment
 
-Build and run with Docker:
+A basic Docker Compose setup is included in `compose.yaml` for containerized deployment.
+
 ```bash
-docker build -t discord-bot-v2 .
-docker run --env-file .env discord-bot-v2
+docker compose up --build
 ```
 
-## 📝 License
+The compose file expects an environment file named `.env` and runs the bot from the repository root.
+
+## Notes
+
+- Slash commands are refreshed automatically when the bot starts.
+- AI replies are triggered by mentioning the bot in a message, not by prefix commands.
+- Firebase is used for persistent moderation warnings and movie list storage.
+
+## License
 
 ISC
 
-## 👤 Author
+## Author
 
 Omar ([@niazieo](https://github.com/niazieo))
