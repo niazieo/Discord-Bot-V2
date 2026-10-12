@@ -34,7 +34,7 @@ export default {
 
         // console.log("AI Response Object:", response);
         var reply = response.message.content;
-        console.log("Reply:", reply);
+        // console.log("Reply:", reply);
 
         try {
           if (reply.length > 2000) {
