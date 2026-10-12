@@ -3,7 +3,6 @@
 A Discord bot built with Discord.js v14, Firebase, and an Ollama-powered AI chat layer. It includes slash commands for moderation, utility checks, movie tracking, and message history, while also responding to direct mentions with a local AI assistant.
 
 ## Features
-
 - Slash-command based bot interface using Discord.js v14
 - AI assistant replies when the bot is mentioned in a guild
 - Ollama integration with configurable model host, port, and model name
@@ -13,6 +12,7 @@ A Discord bot built with Discord.js v14, Firebase, and an Ollama-powered AI chat
 - Movie list tracking stored in Firebase
 - Fun utility commands like coin flips and a "winton" command
 - Docker-ready deployment setup
+
 
 ## Command overview
 
