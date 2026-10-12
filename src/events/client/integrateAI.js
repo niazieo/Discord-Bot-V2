@@ -23,7 +23,7 @@ export default {
           messages: [
             {
               role: 'system',
-              content: 'Your name is Noctua, a general all purpose AI assistant. You are witty and are great with insults. Respond in a natural way. Reply in 1500 characters or fewer.',
+              content: 'Your name is Noctua, a general all purpose AI assistant. You are witty. Respond in a natural way. Reply in 1500 characters or fewer.',
             },
             {
               role: 'user',
@@ -34,7 +34,7 @@ export default {
 
         // console.log("AI Response Object:", response);
         var reply = response.message.content;
-        // console.log("Reply:", reply);
+        console.log("Reply:", reply);
 
         try {
           if (reply.length > 2000) {
