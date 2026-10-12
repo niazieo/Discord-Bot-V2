@@ -1,7 +1,7 @@
 import { Ollama } from 'ollama';
 
 const ollama = new Ollama({ host: process.env.OLLAMA_HOST, port: process.env.OLLAMA_PORT });
-const modelName = process.env.MODEL_NAME || 'qwen3';
+const modelName = process.env.MODEL_NAME || 'qwen3:8b';
 
 export default {
     name: 'messageCreate',
@@ -23,7 +23,7 @@ export default {
           messages: [
             {
               role: 'system',
-              content: 'Your name is Noctua, a general all purpose AI assistant. Reply in 1500 characters or fewer.',
+              content: 'Your name is Noctua, a general all purpose AI assistant. You are witty. Reply in 1500 characters or fewer.',
             },
             {
               role: 'user',
